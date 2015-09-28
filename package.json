@@ -1,28 +1,27 @@
 {
-  "name": "apostrophe-google-login",
-  "version": "0.4.1",
-  "description": "google login for apostrophe sites",
+  "name": "apostrophe-ldap-login",
+  "version": "0.1.0",
+  "description": "ldap login for apostrophe sites",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/punkave/apostrophe-google-login.git"
+    "url": "https://github.com/aesora/apostrophe-ldap-login.git"
   },
   "keywords": [
     "apostrophe",
-    "google",
-    "gmail",
+    "ldap",
     "login"
   ],
-  "author": "p'unk avenue llc",
+  "author": "Aesora UG (haftungsbeschraenkt)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/punkave/apostrophe-google-login/issues"
+    "url": "https://github.com/aesora/apostrophe-ldap-login/issues"
   },
-  "homepage": "https://github.com/punkave/apostrophe-google-login",
+  "homepage": "https://github.com/aesora/apostrophe-ldap-login",
   "dependencies": {
-    "passport-google-oauth": "^0.1.5"
+    "passport-ldapauth": "^0.3.0"
   }
 }

@@ -10,14 +10,19 @@ function Construct(options, callback) {
   var app = options.app;
   var passport = options.passport;
 
-  var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+  var LdapStrategy = require('passport-ldapauth');
 
-  passport.use(new GoogleStrategy({
-    clientID: options.id,
-    clientSecret: options.secret,
-    callbackURL: options.baseUrl + "/apos-google-login/return"
-  }, function(accessToken, refreshToken, profile, done) {
-    var email = profile.emails[0].value;
+  passport.use(new LdapStrategy({
+    server: {
+      url: options.url,
+      bindDn: options.bindDn,
+      bindCredentials: options.bindCredentials,
+      searchBase: options.searchBase,
+      searchFilter: '(|(uid={{username}})(mail={{username}}))',
+      searchAttributes: ['givenName', 'sn', 'mail', 'uid', 'title', 'telephoneNumber']
+    }
+  }, function(user, done) {
+    var email = user.mail;
     return apos.pages.findOne({ email: email, type : 'person', login : true }, function(err, person){
       if (err) {
         return done(err);
@@ -29,15 +34,9 @@ function Construct(options, callback) {
     });
   }));
 
-  app.get('/apos-google-login',
-    passport.authenticate('google', {scope : 'openid email'})
-  );
-
-  app.get('/apos-google-login/return',
-    passport.authenticate('google', { failureRedirect: options.failureRedirect }),
-    function(req, res) {
-      // Successful authentication redirect
-      res.redirect(options.afterLogin || '/');
+  app.post('/apos-ldap-login', passport.authenticate('ldapauth', {failureRedirect: options.failureRedirect}), function (req, res){
+    // Successful authentication redirect
+    res.redirect(options.afterLogin || '/');
   });
 
   // Invoke the callback. This must happen on next tick or later!
